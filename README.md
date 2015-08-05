@@ -10,3 +10,5 @@ Adds several `ToExcel` extension methods to an IEnumerable list of strings.  All
 `ToExcel(string filePath, string worksheetName)`
 
 `ToExcel(string filePath)`
+
+Package can be found on Nuget at: https://www.nuget.org/packages/FoxOpenXML
