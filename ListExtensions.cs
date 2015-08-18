@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using ClosedXML.Excel;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,10 @@ namespace FoxOpenXML
             var index = 0;
             foreach (var s in source)
             {
+                if (s == null) continue;
+
                 var enumerable = s as IList<T> ?? s.ToList();
+                if (!enumerable.Any()) continue;
 
                 var name = String.Format("Sheet{0}{1}", index, 1);
                 if (worksheetNames != null && worksheetNames.Any() && worksheetNames.Count >= index + 1)
@@ -87,7 +91,14 @@ namespace FoxOpenXML
             }
 
             var workbook = dtTupleList.XlWorkbook();
-            workbook.SaveAs(filePath);
+
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                var directory = Path.GetDirectoryName(filePath);
+                if (directory != null && !Directory.Exists(directory)) Directory.CreateDirectory(directory);
+
+                workbook.SaveAs(filePath);
+            }
         }
     }
 }

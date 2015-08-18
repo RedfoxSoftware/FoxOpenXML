@@ -33,9 +33,11 @@ namespace FoxOpenXML
 
             if (worksheet == null) throw new Exception("Unknown error occurred retrieving specified worksheet.");
 
-            var dt = data.ToList().CreateDataTable(delimiter);
-            worksheet.Cell(1, 1).InsertData(dt.AsEnumerable());
+            var enumerable = data as IList<string> ?? data.ToList();
+            if (!enumerable.ToList().Any()) return source;
 
+            var dt = enumerable.ToList().CreateDataTable(delimiter);
+            worksheet.Cell(1, 1).InsertData(dt.AsEnumerable());
             return source;
         }
     }
